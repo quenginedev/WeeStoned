@@ -14,17 +14,12 @@ jobs:
       
       - name: Setup Node
         uses: actions/setup-node@master
-      
       - name: Install Dependencies and Build
         run: |
             cd app/
             npm ci
-      
-      - name: Build App
-        run: |
             npm run build
             cd ..
-            
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
