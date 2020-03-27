@@ -1,0 +1,51 @@
+type User {
+  id: ID! @id
+  firebase_id: String! @unique
+  displayName: String!
+  phoneNumber: String!
+  email: String!
+  photoURL: String!
+  purchases: [Product!]!
+  brand: Brand
+}
+
+type Brand {
+  id: ID! @id
+  name: String!
+  owner: User! @relation(link: INLINE)
+  products: [Product!]!
+}
+
+type Product {
+  id: ID! @id
+  name: String!
+  price: Float!
+  productType: ProductType!
+  rate: [Rate!]!
+  brand: Brand @relation(link: INLINE)
+}
+
+type Rate {
+  id: ID! @id
+  user: User!
+  score: Int!
+  message: String
+}
+
+type ProductType {
+  id: ID! @id
+  name: String!
+  unit: UnitType!
+  categories: [ProductTypeCategory]
+}
+
+type ProductTypeCategory {
+  id: ID! @id
+  name: String!
+}
+
+type UnitType {
+  id: ID! @id
+  name: String!
+}
+
