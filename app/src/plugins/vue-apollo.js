@@ -9,7 +9,7 @@ Vue.use(VueApollo)
 const AUTH_TOKEN = 'apollo-token'
 
 // Http endpoint
-const httpEndpoint = 'https://eu1.prisma.sh/ernesthayford/weestoned/dev'
+const httpEndpoint = process.env.VUE_APP_PRISMA_HTTPS
 
 // Config
 const defaultOptions = {
@@ -17,7 +17,7 @@ const defaultOptions = {
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
   // Use `null` to disable subscriptions
-  wsEndpoint: 'wss://eu1.prisma.sh/ernesthayford/weestoned/dev',
+  wsEndpoint: process.env.VUE_APP_PRISMA_WSS,
   // LocalStorage token
   tokenName: AUTH_TOKEN,
   // Enable Automatic Query persisting with Apollo Engine

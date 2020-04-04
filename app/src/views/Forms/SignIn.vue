@@ -60,11 +60,16 @@ export default {
     },
     methods: {
         googleSignIn(){
+            let query = this.$route.query
             this.googleLoader = true
             let provider = new this.$firebase.auth.GoogleAuthProvider()
             this.$firebase.auth().signInWithPopup(provider)
                 .then(credentials=>{
-                    this.$router.push({name: 'home'})
+                    console.log({credentials})
+                    if(query.to)
+                        this.$router.push(query.to)
+                    else
+                        this.$router.push({name: 'home'})
                 }).catch(error=>{
                     this.error = error.message
                     this.showError = true
