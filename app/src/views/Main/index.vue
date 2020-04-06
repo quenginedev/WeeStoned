@@ -44,6 +44,7 @@
                     <v-col cols="11" class=" text-center">
                         <v-icon size="124">mdi-emoticon-sad-outline</v-icon>
                         <p class=" headline grey--text">Opps, Something went really wrong somewhere</p>
+                        <p class=" headline grey--text">{{error.message}}</p>
                         <v-btn block color="info" rounded>Refresh?</v-btn>
                     </v-col>
                 </v-row>
@@ -105,7 +106,7 @@ export default {
             this.$router.push({name})
         }
     },
-    created() {
+    mounted() {
         this.$root.$on('disable-nav', bool=>{
             this.disable_nav = bool
         })
@@ -152,7 +153,7 @@ export default {
                     })
                 }
             }).catch(err=>{
-                this.disable_nav = bool
+                this.disable_nav = false
                 this.error = true
             }).finally(_=>{
                 this.show_routes = true

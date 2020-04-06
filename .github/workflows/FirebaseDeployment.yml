@@ -15,6 +15,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@master
       - name: Install Dependencies and Build
+        env:
+          VUE_APP_PRISMA_HTTPS: ${{secrets.PRISMA_HTTPS}}
+          VUE_APP_PRISMA_WSS: ${{secrets.PRISMA_WSS}}
         run: |
             cd app/
             npm ci
