@@ -105,7 +105,7 @@ export default {
             this.$router.push({name})
         }
     },
-    created() {
+    mounted() {
         this.$root.$on('disable-nav', bool=>{
             this.disable_nav = bool
         })
@@ -152,8 +152,9 @@ export default {
                     })
                 }
             }).catch(err=>{
-                this.disable_nav = bool
+                this.disable_nav = false
                 this.error = true
+                console.error(err)
             }).finally(_=>{
                 this.show_routes = true
             })
