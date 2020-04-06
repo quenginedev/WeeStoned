@@ -108,7 +108,7 @@ export default class Crud {
                 }
             `,
             variables: options
-        }).then(res=>res.data[`update${this.Name}`])
+        }).then(res=>res.data[`create${this.Name}`])
             .catch(err=>{
                 throw err
             })
@@ -158,7 +158,7 @@ export default class Crud {
         })
 
         observer.subscribe({
-            next : callback,
+            next : res=>{ callback(res.data[this.name])},
             error: error,
         })
     }

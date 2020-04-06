@@ -4,25 +4,44 @@ type User {
   displayName: String!
   phoneNumber: String!
   email: String!
-  photoURL: String!
-  purchases: [Product!]!
+  photoURL: String
+  purchases: [Purchase!]!
   brand: Brand
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Brand {
   id: ID! @id
+  photoURL: String
   name: String!
   owner: User! @relation(link: INLINE)
   products: [Product!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Purchase {
+  id: ID! @id
+  products: [Product!]!
+  quantity: Int!
+  customer: User!
+  status: String! @default(value: "pending")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Product {
   id: ID! @id
   name: String!
   price: Float!
+  img: String!
   productType: ProductType!
+  category: ProductTypeCategory!
   rate: [Rate!]!
-  brand: Brand @relation(link: INLINE)
+  brand: Brand! @relation(link: INLINE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Rate {
@@ -30,6 +49,8 @@ type Rate {
   user: User!
   score: Int!
   message: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type ProductType {
@@ -37,15 +58,21 @@ type ProductType {
   name: String!
   unit: UnitType!
   categories: [ProductTypeCategory]
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type ProductTypeCategory {
   id: ID! @id
   name: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type UnitType {
   id: ID! @id
   name: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 

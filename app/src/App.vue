@@ -5,18 +5,12 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
-
-  components: {
-    HelloWorld,
+  created() {
+      this.$vuetify.theme.dark = false
   },
-
-  data: () => ({
-    
-  }),
 };
 </script>
 <style>

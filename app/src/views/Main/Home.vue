@@ -1,5 +1,6 @@
 <template>
-  <v-row justify="center">
+  <div>
+    <v-row justify="center">
       <ProductCard 
         v-for="(product, index) in products" 
         :key="index" 
@@ -8,7 +9,8 @@
         >
         
         </ProductCard>
-  </v-row>
+    </v-row>
+  </div>
 </template>
 
 <script>

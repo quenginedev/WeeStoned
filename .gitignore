@@ -3,7 +3,7 @@
 /dist
 /generated
 
-
+.env
 
 # local env files
 .env.local
