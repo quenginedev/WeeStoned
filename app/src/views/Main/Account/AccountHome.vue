@@ -51,6 +51,23 @@
         </v-list-item>
 
         <v-divider></v-divider>
+        <v-list-item
+            @click="changeDarkMode"
+        >
+            <v-list-item-icon>
+                <v-icon>mdi-theme-light-dark</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+                <v-list-item-title>Dark Mode</v-list-item-title>
+                <v-list-item-subtitle>Toggle between light and dark mode</v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+                <v-switch
+                    v-model="darkMode"
+                ></v-switch>            
+            </v-list-item-action>
+        </v-list-item>
+        <v-divider></v-divider>
         <v-list-item 
             color="warning" 
             @click="logout"
@@ -74,10 +91,19 @@ export default {
     computed: {
         ...mapGetters({user: "auth/getUser"})
     },
+    data() {
+        return {
+            darkMode: this.$vuetify.theme.dark
+        }
+    },
     methods: {
         logout(){
             this.$firebase.auth().signOut()
             console.log(this.$firebase.auth().currentUser)
+        },
+        changeDarkMode(){
+            this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+            this.darkMode = this.$vuetify.theme.dark
         }
     },
 }

@@ -9,7 +9,7 @@
 export default {
   name: 'App',
   created() {
-      this.$vuetify.theme.dark = true
+      this.$vuetify.theme.dark = false
   },
 };
 </script>

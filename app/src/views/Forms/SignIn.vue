@@ -29,13 +29,13 @@
                     <v-form>
                         <v-btn 
                             @click="googleSignIn" 
-                            block rounded 
+                            block 
                             :loading="googleLoader"
                             color="red lighten-1" 
                             class="my-7 white--text">
                             <v-icon left>mdi-google</v-icon> Google
                         </v-btn>
-                        <v-btn disabled block rounded color="blue" class="white--text">
+                        <v-btn disabled block color="blue" class="white--text">
                             <v-icon left>mdi-apple</v-icon> Apple
                         </v-btn>
                     </v-form>

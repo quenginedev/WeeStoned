@@ -39,7 +39,7 @@ type Product {
   productType: ProductType!
   category: ProductTypeCategory!
   rate: [Rate!]!
-  brand: Brand @relation(link: INLINE)
+  brand: Brand! @relation(link: INLINE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
