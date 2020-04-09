@@ -7,10 +7,17 @@ import firebase from './plugins/firebase'
 import vueMoment from 'vue-moment'
 import {WebRTC} from 'vue-webrtc'
 import {createProvider} from './plugins/vue-apollo'
+import Crud from './plugins/prisma-crud'
 
 Vue.use(firebase)
 Vue.use(vueMoment)
-
+Vue.use(Crud, {
+  operations: [
+    'product',
+    'productType',
+    'user'
+]
+})
 Vue.component(WebRTC.name, WebRTC)
 
 const apolloProvider = createProvider()

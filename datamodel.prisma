@@ -35,7 +35,7 @@ type Product {
   id: ID! @id
   name: String!
   price: Float!
-  img: String!
+  img: String
   productType: ProductType!
   category: ProductTypeCategory!
   rate: [Rate!]!
@@ -57,7 +57,7 @@ type ProductType {
   id: ID! @id
   name: String!
   unit: UnitType!
-  categories: [ProductTypeCategory]
+  categories: [ProductTypeCategory!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -65,6 +65,7 @@ type ProductType {
 type ProductTypeCategory {
   id: ID! @id
   name: String!
+  productType: ProductType! @relation(link: INLINE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
