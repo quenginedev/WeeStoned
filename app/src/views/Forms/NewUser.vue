@@ -59,7 +59,7 @@
                         @click="sendSMS"
                         :loading="sms_sending"
                         block
-                        rounded
+                        outlined
                         :disabled="isDisabled"
                         color="primary"
                     ><v-icon left>mdi-cellphone-key</v-icon> Verify</v-btn>
@@ -118,7 +118,8 @@
                                 :loading="sms_sending"
                                 @click="sendSMS"
                                 color="secondary"
-                                rounded block
+                                block
+                                outlined
                             ><v-icon left>mdi-sync</v-icon> resend</v-btn>
                         </v-col>
                         <v-col cols="6">
@@ -126,7 +127,8 @@
                                 :loading="verifying"
                                 @click="verifyCode"
                                 color="primary"
-                                rounded block
+                                outlined
+                                block
                             ><v-icon left>mdi-check</v-icon> verify</v-btn>
                         </v-col>
                     </v-row>
