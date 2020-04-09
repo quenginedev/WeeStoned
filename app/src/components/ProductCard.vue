@@ -24,7 +24,7 @@
                         <h1 class="text-capitalize grey--text ">{{product.name}}</h1>
                         <!-- <p class="caption">THC 4.0 - 10.0%</p> --> 
                         <span class="d-flex mt-7 ">
-                            <h2 class="green--text"> GHc {{product.price}} </h2> 
+                            <h2 class="green--text"> {{product.price | currency}} </h2> 
                             / {{product.productType.unit.name}}
                         </span>
                     </v-col>

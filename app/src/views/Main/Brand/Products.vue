@@ -13,7 +13,11 @@
             </v-col>
         </v-row>
         <v-card outlined>
-            <v-list v-scroll rounded class="mb-12">
+            <div class="text-center py-7" v-if="is_loading">
+                <v-progress-circular indeterminate size="72" color="primary">
+                </v-progress-circular>
+            </div>
+            <v-list v-else v-scroll rounded class="mb-12">
                 <v-list-item v-for="(product, index) in products" :key="index">
                     <v-list-item-avatar>
                         <v-img v-if="product.img" :src="product.img"></v-img>
@@ -21,7 +25,7 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class=" text-capitalize">{{product.name}}</v-list-item-title> 
-                        <v-list-item-subtitle>GHS <span class=" primary--text">{{product.price}}</span></v-list-item-subtitle> 
+                        <v-list-item-subtitle><span class=" primary--text">{{product.price | currency}}</span></v-list-item-subtitle> 
                     </v-list-item-content>
                     <v-list-item-action>
                         <v-btn @click="editProduct(product)" icon>
@@ -185,6 +189,7 @@ export default {
         },
 
         getProducts(){
+            this.is_loading = true
             this.$crud.product.find(`{
                 id
                 name
@@ -205,6 +210,8 @@ export default {
                 this.products = res.data
             }).catch(err=>{
                 console.log(err)
+            }).finally(_=>{
+                this.is_loading = false
             })
         },
 
