@@ -8,9 +8,10 @@
             >
                 <v-icon>mdi-alert</v-icon>{{ error }}
                 <v-btn
+
                     color="white"
                     icon
-                    text
+                    outlined
                     @click="showError = false"
                 >
                     <v-icon>mdi-close</v-icon>
@@ -29,13 +30,14 @@
                     <v-form>
                         <v-btn 
                             @click="googleSignIn" 
-                            block 
+                            block
+                            outlined 
                             :loading="googleLoader"
                             color="red lighten-1" 
                             class="my-7 white--text">
                             <v-icon left>mdi-google</v-icon> Google
                         </v-btn>
-                        <v-btn disabled block color="blue" class="white--text">
+                        <v-btn outlined disabled block color="blue" class="white--text">
                             <v-icon left>mdi-apple</v-icon> Apple
                         </v-btn>
                     </v-form>

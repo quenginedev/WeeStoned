@@ -68,7 +68,7 @@
                         @click="saveUserData"
                         :loading="sms_sending"
                         block
-                        rounded
+                        outlined
                         :disabled="isDisabled"
                         color="primary"
                     ><v-icon left>mdi-check</v-icon> Continue</v-btn>
