@@ -24,7 +24,7 @@
                         <v-list-item-subtitle>GHS <span class=" primary--text">{{product.price}}</span></v-list-item-subtitle> 
                     </v-list-item-content>
                     <v-list-item-action>
-                        <v-btn icon>
+                        <v-btn @click="editProduct(product)" icon>
                             <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                     </v-list-item-action>
@@ -43,7 +43,7 @@
                 <v-card-title class="mb-3">
                     <p class="headline pa-0 ma-0">Create Product</p>
                     <v-spacer></v-spacer>
-                    <v-btn @click="show_add_product = false" icon text dense>
+                    <v-btn @click="closeEditBox" icon text dense>
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-card-title>
@@ -111,8 +111,11 @@
                         rounded
                         :disabled="!canSave" 
                         color="primary"
-                        @click="createProduct"
-                        >Create Product</v-btn>
+                        @click="processProduct"
+                        >
+                            <span v-if="!editedItem.id">Create Product</span>
+                            <span v-else>Update Product</span>
+                        </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -154,6 +157,10 @@ export default {
         }
     },
     methods: {
+        closeEditBox(){
+            this.show_add_product = false
+            this.editedItem = {}
+        },
         getProductTypes(){
             this.$crud.productType.find(`{
                 id
@@ -184,10 +191,11 @@ export default {
                 price
                 img
                 productType{
-                name
-                unit{name}
+                    id
+                    name
+                    unit{id name}
                 }
-                category{name}
+                category{ id name }
             }`, {
                 orderBy: 'createdAt_DESC',
                 where: {
@@ -200,7 +208,22 @@ export default {
             })
         },
 
-        createProduct(){
+        editProduct(product){
+            this.editedItem = {...product}
+            this.editedItem.productType = product.productType.id 
+            this.editedItem.category = product.category ? product.category.id : null
+            
+            let productType = this.productTypes.find(type=>{
+                return type.id == product.productType.id
+            })
+
+            this.productCategories = productType.categories
+
+            console.log(this.editedItem)
+            this.show_add_product = true 
+        },
+        processProduct(){
+            this.creatingProduct = true
             let brand = {connect: { id: this.user.brand.id } }
             let productType = {connect: {id : this.editedItem.productType}}
             let product = {
@@ -215,8 +238,15 @@ export default {
                 product.category = category
             }
 
-            console.log({product}, this.editedItem)
-            
+            delete product.__typename
+
+            if(!product.id){
+                this.createProduct(product)
+            }else{
+                this.updateProduct(product)
+            }
+        },
+        createProduct(product){
             this.$crud.product.insert(`{
                 id
                 name
@@ -224,16 +254,48 @@ export default {
                 price
                 productType{
                 name
-                unit{name}
+                id
+                unit{id name}
                 }
-                category{name}
+                category{ id name}
             }`, {
                 data: product
             }).then(res=>{
                 this.products.push(res)
-                this.show_add_product = false
+                this.closeEditBox()
             }).catch(err=>{
                 console.error(err)
+            }).finally(_=>{
+                this.creatingProduct = false
+            })
+        },
+        updateProduct(product){
+            let id = product.id
+            delete product.id
+
+            this.$crud.product.update(`{
+                id
+                name
+                img
+                price
+                productType{
+                name
+                id
+                unit{id name}
+                }
+                category{ id name}
+            }`, {
+                data: product,
+                where: {id}
+            }).then(res=>{
+                this.products = this.products.map(product=>{
+                    return product.id !== res.id ? product : res
+                })
+                this.closeEditBox()
+            }).catch(err=>{
+                console.error({err, product})
+            }).finally(_=>{
+                this.creatingProduct = false
             })
         }
     },
