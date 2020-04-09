@@ -1,4 +1,4 @@
-import {app} from '@/main'
+import {createProvider} from '../plugins/vue-apollo'
 import pluralize from 'pluralize'
 import tag from 'graphql-tag'
 
@@ -8,7 +8,7 @@ export default class Crud {
         this.name = name
         this.plural = pluralize(name)
         this.Name = name.charAt(0).toUpperCase() + name.slice(1)
-        this.client = app.$apolloProvider.defaultClient
+        this.client = createProvider().defaultClient
     }
 
 
@@ -142,6 +142,22 @@ export default class Crud {
             })
     }
 
+    
+    aggregate(options = {}){
+        return this.client.query({
+            query: tag`
+                query ${this.plural}Connection ($where: ${this.Name}WhereInput){
+                    ${this.plural}Connection(where: $where){
+                        aggregate{count}
+                    }
+                }
+            `,
+            variables: options
+        }).then(res=>res.data[`${this.plural}Connection`].aggregate.count)
+            .catch(err=>{
+                throw err
+            })
+    }
     subscribeToMore(node, options, callback = ()=>{}, error = ()=>{}){
         const subQuery = tag`subscription ${name}($where: ${this.Name}WhereInput) {
             ${this.name}(where: {
@@ -162,4 +178,5 @@ export default class Crud {
             error: error,
         })
     }
+
 }

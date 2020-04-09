@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- <v-row justify="center">
+        <v-row justify="center">
             <v-col cols="11" class="py-0 my-0">
                 <v-text-field 
                     filled
@@ -11,15 +11,16 @@
                     <v-icon slot="append">mdi-magnify</v-icon>
                 </v-text-field>        
             </v-col>
-        </v-row> -->
+        </v-row>
         <v-list v-scroll rounded class="mb-12">
-            <v-list-item v-for="(item, index) in 7" :key="index">
-                <v-list-item-avatar color="secondary">
-                    <v-icon dark>mdi-tag</v-icon>
+            <v-list-item v-for="(product, index) in products" :key="index">
+                <v-list-item-avatar>
+                    <v-img v-if="product.img" :src="product.img"></v-img>
+                    <v-icon v-else>mdi-tag</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                    <v-list-item-title>Royal high</v-list-item-title> 
-                    <v-list-item-subtitle>GHS <span class=" primary--text">30.00</span></v-list-item-subtitle> 
+                    <v-list-item-title class=" text-capitalize">{{product.name}}</v-list-item-title> 
+                    <v-list-item-subtitle>GHS <span class=" primary--text">{{product.price}}</span></v-list-item-subtitle> 
                 </v-list-item-content>
                 <v-list-item-action>
                     <v-btn icon>
@@ -46,8 +47,8 @@
                 </v-card-title>
                 <v-card-text>
                     <v-form class=" text-center">
-                        <v-avatar class="mb-5" size="124" color="secondary">
-                            <v-icon size="72">mdi-image</v-icon>
+                        <v-avatar class="mb-5" size="124" color="primary">
+                            <v-icon size="72">mdi-tag</v-icon>
                         </v-avatar>
                         <v-text-field
                             v-model="editedItem.name"
@@ -57,10 +58,11 @@
                             filled
                             placeholder="Product Name"
                         >
-                            <v-icon slot="prepend">mdi-tag</v-icon>
+                            <v-icon left slot="prepend-inner">mdi-tag</v-icon>
                         </v-text-field>
 
                         <v-select
+                            @change="setCategories"
                             v-model="editedItem.productType"
                             :items="productTypes"
                             placeholder="Product Type"
@@ -70,7 +72,7 @@
                             dense
                             filled
                         >
-                            <v-icon slot="prepend">mdi-tag-heart</v-icon>
+                            <v-icon left slot="prepend-inner">mdi-tag-heart</v-icon>
                         </v-select>
 
                         <v-select
@@ -84,7 +86,7 @@
                             dense
                             filled
                         >
-                            <v-icon slot="prepend">mdi-tag-multiple</v-icon>
+                            <v-icon left slot="prepend-inner">mdi-tag-multiple</v-icon>
                         </v-select>
 
                         <v-text-field
@@ -94,10 +96,9 @@
                             dense
                             filled
                             type="number"
-                            min="1"
                             placeholder="Product Price"
                         >
-                            <v-icon slot="prepend">mdi-cash</v-icon>
+                            <v-icon left slot="prepend-inner">mdi-cash</v-icon>
                         </v-text-field>
                     </v-form>
                 </v-card-text>
@@ -134,13 +135,14 @@ export default {
     computed: {
         canSave(){
             let item = this.editedItem 
-            return item.name && item.productType && item.price && item.category
+            return item.name && item.productType && item.price
         }
     },
     data() {
         return {
+            user: this.$store.getters['auth/getUser'],
             editedItem: {},
-            show_add_product: true,
+            show_add_product: false,
             is_empty: false,
             is_loading: true,
             products: [],
@@ -151,8 +153,13 @@ export default {
     },
     methods: {
         getProductTypes(){
-            ProductType.find(`{
-                id name
+            this.$crud.productType.find(`{
+                id
+                name
+                categories{
+                    id
+                    name
+                }
             }`, {orderBy: 'name_ASC'}).then(res=>{
                 this.productTypes = res. data
             }).catch(err=>{
@@ -160,12 +167,77 @@ export default {
             })
         },
 
+        setCategories(id){
+            let product_type = this.productTypes.find(type=>{
+                return type.id == id
+            })
+            if(product_type)
+                this.productCategories = product_type.categories
+        },
+
+        getProducts(){
+            this.$crud.product.find(`{
+                id
+                name
+                price
+                img
+                productType{
+                name
+                unit{name}
+                }
+                category{name}
+            }`, {
+                orderBy: 'createdAt_DESC',
+                where: {
+                    brand : {id: this.user.brand.id}
+                }
+            }).then(res=>{
+                this.products = res.data
+            }).catch(err=>{
+                console.log(err)
+            })
+        },
+
         createProduct(){
-            console.log(this.editedItem)
+            let brand = {connect: { id: this.user.brand.id } }
+            let productType = {connect: {id : this.editedItem.productType}}
+            let product = {
+                ...this.editedItem,
+                brand,
+                productType,
+                price: parseInt(this.editedItem.price)
+            }
+            
+            if(this.editedItem.category){
+                let category = {connect: {id : this.editedItem.category} }
+                product.category = category
+            }
+
+            console.log({product}, this.editedItem)
+            
+            this.$crud.product.insert(`{
+                id
+                name
+                img
+                price
+                productType{
+                name
+                unit{name}
+                }
+                category{name}
+            }`, {
+                data: product
+            }).then(res=>{
+                this.products.push(res)
+                this.show_add_product = false
+            }).catch(err=>{
+                console.error(err)
+            })
         }
     },
     created() {
         this.getProductTypes()
+        this.getProducts()
     },
 }
 </script>

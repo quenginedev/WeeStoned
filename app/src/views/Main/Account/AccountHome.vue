@@ -2,7 +2,7 @@
   <div>
     <v-list>
       <v-list-item link>
-        <v-list-item-avatar size="54" color="secondary" class=" elevation-3" v-ripple>
+        <v-list-item-avatar size="54" color="primary" class=" elevation-3" v-ripple>
             <v-img v-if="user.photoURL" :src="user.photoURL"></v-img>
             <v-icon v-else size="32" color="white">mdi-account</v-icon>
         </v-list-item-avatar>

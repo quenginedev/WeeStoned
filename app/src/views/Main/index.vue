@@ -44,7 +44,7 @@
                     <v-col cols="11" class=" text-center">
                         <v-icon size="124">mdi-emoticon-sad-outline</v-icon>
                         <p class=" headline grey--text">Opps, Something went really wrong somewhere</p>
-                        <v-btn block color="info" rounded>Refresh?</v-btn>
+                        <v-btn @click="$forceUpdate" block color="info" rounded>Refresh?</v-btn>
                     </v-col>
                 </v-row>
                 <router-view v-if="show_routes && !error"></router-view>
