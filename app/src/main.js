@@ -8,6 +8,7 @@ import vueMoment from 'vue-moment'
 import {WebRTC} from 'vue-webrtc'
 import {createProvider} from './plugins/vue-apollo'
 import Crud from './plugins/prisma-crud'
+import VueCurrencyFilter from 'vue-currency-filter'
 
 Vue.use(firebase)
 Vue.use(vueMoment)
@@ -18,6 +19,15 @@ Vue.use(Crud, {
     'user'
 ]
 })
+Vue.use(VueCurrencyFilter,{
+    symbol : '‎GH₵',
+    thousandsSeparator: ',',
+    fractionCount: 2,
+    fractionSeparator: '.',
+    symbolPosition: 'front',
+    symbolSpacing: true
+})
+
 Vue.component(WebRTC.name, WebRTC)
 
 const apolloProvider = createProvider()
