@@ -56,7 +56,7 @@
                     <v-icon>mdi-home-outline</v-icon>
                 </v-btn>
                 <v-btn :disabled="disable_nav" icon color=""><v-icon>mdi-magnify</v-icon></v-btn>
-                <v-btn :disabled="disable_nav" icon color=""><v-icon>mdi-menu</v-icon> </v-btn>                
+                <v-btn :disabled="disable_nav" icon color=""><v-icon>mdi-star-outline</v-icon> </v-btn>                
                 <v-btn 
                     v-if="user && user.brand"
                     @click="goTo('brand-dashboard')" 
