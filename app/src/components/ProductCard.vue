@@ -1,11 +1,11 @@
 <template>
     <v-col @click="viewProduct(product)"
         cols="11" v-if="product">
-        <v-card outlined class="" >
+        <v-card outlined >
             <v-card-text>
                 <v-row align="center">
                     <v-col cols="12" class="ma-0 pb-0">
-                        <v-row class="px-7 " justify="space-between">
+                        <v-row class="px-5 " justify="space-between">
                             <v-chip
                                 class="mb-5 text-capitalize "
                                 :color="color"
@@ -13,8 +13,10 @@
                                 >
                                     {{product.productType.name}}
                             </v-chip>
-                            <p>
-                                <v-icon>mdi-cannabis</v-icon> {{product.brand.name}}
+                            <p class="">
+                                <v-icon color="primary">mdi-cannabis</v-icon>
+                                    {{product.brand.name}}
+                                <v-icon color="primary">mdi-cannabis</v-icon>
                             </p>
                         </v-row>
                     </v-col>
@@ -34,6 +36,9 @@
                     </v-col>
                 </v-row>
             </v-card-text>
+            <v-card-actions>
+                <v-btn block color="primary" outlined><v-icon left>mdi-basket</v-icon> add to cart</v-btn>
+            </v-card-actions>
         </v-card>
     </v-col>
 </template>

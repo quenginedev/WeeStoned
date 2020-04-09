@@ -20,7 +20,7 @@
                         color="primary"
                         @click="createBrand"
                         :disabled="!brandName"
-                        rounded
+                        outlined
                         block
                     >
                         <v-icon left>mdi-domain-plus</v-icon>

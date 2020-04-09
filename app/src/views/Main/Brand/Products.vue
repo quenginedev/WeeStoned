@@ -12,23 +12,25 @@
                 </v-text-field>        
             </v-col>
         </v-row>
-        <v-list v-scroll rounded class="mb-12">
-            <v-list-item v-for="(product, index) in products" :key="index">
-                <v-list-item-avatar>
-                    <v-img v-if="product.img" :src="product.img"></v-img>
-                    <v-icon v-else>mdi-tag</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class=" text-capitalize">{{product.name}}</v-list-item-title> 
-                    <v-list-item-subtitle>GHS <span class=" primary--text">{{product.price}}</span></v-list-item-subtitle> 
-                </v-list-item-content>
-                <v-list-item-action>
-                    <v-btn icon>
-                        <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
-                </v-list-item-action>
-            </v-list-item>
-        </v-list>
+        <v-card outlined>
+            <v-list v-scroll rounded class="mb-12">
+                <v-list-item v-for="(product, index) in products" :key="index">
+                    <v-list-item-avatar>
+                        <v-img v-if="product.img" :src="product.img"></v-img>
+                        <v-icon v-else>mdi-tag</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title class=" text-capitalize">{{product.name}}</v-list-item-title> 
+                        <v-list-item-subtitle>GHS <span class=" primary--text">{{product.price}}</span></v-list-item-subtitle> 
+                    </v-list-item-content>
+                    <v-list-item-action>
+                        <v-btn icon>
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-list-item-action>
+                </v-list-item>
+            </v-list>
+        </v-card>
         <v-dialog
             class=""
             v-model="show_add_product"
