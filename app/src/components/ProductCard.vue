@@ -1,6 +1,6 @@
 <template>
     <v-col @click="viewProduct(product)"
-        cols="11" v-if="product">
+        cols="11" sm="7" md="5" lg="3" v-if="product">
         <v-card outlined >
             <v-card-text>
                 <v-row align="center">
@@ -37,7 +37,7 @@
                 </v-row>
             </v-card-text>
             <v-card-actions>
-                <v-btn block color="primary" outlined><v-icon left>mdi-basket</v-icon> add to cart</v-btn>
+                <slot></slot>
             </v-card-actions>
         </v-card>
     </v-col>

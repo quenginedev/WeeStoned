@@ -13,7 +13,8 @@
                 <!-- </v-btn> -->
             </v-badge>
             <v-badge
-                content="4"
+                :content="basketCount"
+                :value="basketCount"
                 class="mr-3"
                 color="success"
                 overlap
@@ -25,6 +26,9 @@
         </v-toolbar>
         <v-content class="routes">
             <v-col class=" fill-height">
+                <v-alert color="info" text icon="mdi-information" dismissible>
+                    App still under construction
+                </v-alert>
                 <v-row 
                 v-if="!show_routes"
                 align="center" 
@@ -86,7 +90,7 @@ import {mapGetters} from 'vuex'
 export default {
     name: 'AppEntry',
     computed: {
-        ...mapGetters({user: 'auth/getUser'})
+        ...mapGetters({user: 'auth/getUser', basketCount: 'basket/getProductsCount'})
     },
     data() {
         return {
