@@ -12,17 +12,40 @@
                     <v-icon color="info">mdi-bell-outline</v-icon>
                 <!-- </v-btn> -->
             </v-badge>
-            <v-badge
-                :content="basketCount"
-                :value="basketCount"
-                class="mr-3"
-                color="success"
-                overlap
-            >
-                <!-- <v-btn icon color="success" dense>  -->
-                    <v-icon color="success">mdi-basket-outline</v-icon> 
-                <!-- </v-btn> -->
-            </v-badge>
+            <v-menu v-model="showBasketMenu" min-width="320" offset-y :close-on-content-click="false">
+                <template v-slot:activator="{ on }">
+                    <v-badge
+                        :content="basketCount"
+                        :value="basketCount"
+                        class="mr-3"
+                        color="success"
+                        overlap
+                    >
+                        <v-icon v-on="on" color="success">mdi-basket-outline</v-icon> 
+                    </v-badge>
+                </template>
+                <checkout-list 
+                    closeable
+                    :max="3"
+                >
+                    <template slot="header">
+                        Your Basket
+                        <v-spacer></v-spacer>
+                        <v-btn icon @click="showBasketMenu = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </template>
+                    <template slot-scope="{ basketCount }">
+                        <v-btn 
+                            @click="showBasketMenu = false"
+                            :to="{name: 'checkout'}" 
+                            :disabled="basketCount < 1" 
+                            color="primary" block>
+                            <v-icon left>mdi-basket</v-icon> checkout
+                        </v-btn>
+                    </template>
+                </checkout-list>
+            </v-menu>
         </v-toolbar>
         <v-content class="routes">
             <v-col class=" fill-height">
@@ -85,21 +108,48 @@
 <script>
 import Crud from '../../graphql/Crud.gql'
 const User = new Crud('user')
-
+import CheckoutList from '../../components/CartList'
 import {mapGetters} from 'vuex'
 export default {
     name: 'AppEntry',
+    components:{
+        CheckoutList
+    },
     computed: {
-        ...mapGetters({user: 'auth/getUser', basketCount: 'basket/getProductsCount'})
+        ...mapGetters({
+            user: 'auth/getUser', 
+            basketCount: 'basket/getProductsCount',
+            basket: 'basket/getProducts'
+        }),
+        miniBasket(){
+            return this.basket.filter((item, index)=>{
+                if(index < 3) return true
+            })
+        },
+
+        basketTotal(){
+            let total = 0
+            
+            this.basket.forEach(item=>{
+                total += item.quantity * item.product.price
+            })
+
+            return total
+        }
     },
     data() {
         return {
             show_routes: false,
             error: false,
-            disable_nav: false
+            disable_nav: false,
+            showBasketMenu: false
         }
     },
     methods: {
+        removeBasketItem(index){
+            this.$store.commit('basket/removeProduct', index)
+        },
+        
         isNav(parent){
             return this.$route.matched.some(({name})=>{
                 return name === parent

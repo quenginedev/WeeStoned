@@ -6,6 +6,11 @@
                 <v-row align="center">
                     <v-col cols="12" class="ma-0 pb-0">
                         <v-row class="px-5 " justify="space-between">
+                            <p class=" body-1">
+                                <v-icon color="primary">mdi-cannabis</v-icon>
+                                    {{product.brand.name}}
+                                <v-icon color="primary">mdi-cannabis</v-icon>
+                            </p>
                             <v-chip
                                 class="mb-5 text-capitalize "
                                 :color="color"
@@ -13,11 +18,6 @@
                                 >
                                     {{product.productType.name}}
                             </v-chip>
-                            <p class="">
-                                <v-icon color="primary">mdi-cannabis</v-icon>
-                                    {{product.brand.name}}
-                                <v-icon color="primary">mdi-cannabis</v-icon>
-                            </p>
                         </v-row>
                     </v-col>
                     <v-col cols="7" class=" pl-7">
@@ -25,7 +25,8 @@
                         <!-- <p class="caption">THC 4.0 - 10.0%</p> --> 
                         <span class="d-flex mt-7 ">
                             <h2 class="green--text"> {{product.price | currency}} </h2> 
-                            / {{product.productType.unit.name}}
+                            / 
+                            <span>{{product.productType.unit.name}}</span>
                         </span>
                     </v-col>
                     <v-col cols="5">
