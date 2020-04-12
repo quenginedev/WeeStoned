@@ -24,7 +24,7 @@
             </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
-            <v-btn v-if="!edit" @click="removeBasketItem(index)" color="error" dense icon>
+            <v-btn v-if="!edit" @click="$emit('remove', index)" color="error" dense icon>
                 <v-icon >mdi-delete-outline</v-icon>
             </v-btn>
             <v-btn v-else @click="edit=false" color="primary" dense icon>

@@ -18,7 +18,7 @@
 
         <v-stepper-items>
             <v-stepper-content class="pa-0" step="1">
-                <checkout-list>
+                <checkout-list showDelivery>
                     <template slot-scope="{basketCount}">
                         <v-row justify="end">
                             <v-col cols="6">
@@ -61,6 +61,10 @@
                     </template>
                 </basic-info>
             </v-stepper-content>
+
+            <!-- TODO -->
+                <!-- Review Products, location and delivery Charges -->
+            <!-- TODO -->
 
             <v-stepper-content class="pa-0" step="3">
                 <payment>
@@ -126,6 +130,7 @@ export default {
     methods: {
         setPayment(payment){
             this.purchase.payment = payment
+            this.$store.commit('basket/resetBasket')
             this.step = 4
         }
     },
