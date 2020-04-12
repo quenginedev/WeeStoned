@@ -21,12 +21,17 @@ export default {
     name: "BrandDash",
     data(){
         return {
-            productNumber: 0
+            productNumber: 0,
+            user: this.$store.getters['auth/getUser']
         }
     },
     methods: {
         getProductsNumber(){
-            this.$crud.product.aggregate()
+            this.$crud.product.aggregate({
+                where: {
+                    brand: {id: this.user.brand.id}
+                }
+            })
             .then(res=>{
                 this.productNumber = res
             })

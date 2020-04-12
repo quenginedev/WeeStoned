@@ -17,22 +17,44 @@
                 <v-progress-circular indeterminate size="72" color="primary">
                 </v-progress-circular>
             </div>
-            <v-list v-else v-scroll rounded class="mb-12">
-                <v-list-item v-for="(product, index) in products" :key="index">
+            <v-list v-else v-scroll rounded >
+                <v-list-item v-if="products.length < 1">
                     <v-list-item-avatar>
-                        <v-img v-if="product.img" :src="product.img"></v-img>
-                        <v-icon v-else>mdi-tag</v-icon>
+                        <v-icon>mdi-tag-off</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title class=" text-capitalize">{{product.name}}</v-list-item-title> 
-                        <v-list-item-subtitle><span class=" primary--text">{{product.price | currency}}</span></v-list-item-subtitle> 
+                        <v-list-item-title>No products listed</v-list-item-title>
+                        <v-list-item-subtitle>You can add a product by clicking the add button</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
-                        <v-btn @click="editProduct(product)" icon>
-                            <v-icon>mdi-pencil</v-icon>
+                        <v-btn
+                            @click="show_add_product = true"
+                            color="primary"
+                            dark
+                            small
+                            fab
+                        >
+                            <v-icon>mdi-plus</v-icon>
                         </v-btn>
                     </v-list-item-action>
                 </v-list-item>
+                <template v-else class="mb-12">
+                    <v-list-item v-for="(product, index) in products" :key="index">
+                        <v-list-item-avatar>
+                            <v-img v-if="product.img" :src="product.img"></v-img>
+                            <v-icon v-else>mdi-tag</v-icon>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title class=" text-capitalize">{{product.name}}</v-list-item-title> 
+                            <v-list-item-subtitle><span class=" primary--text">{{product.price | currency}}</span></v-list-item-subtitle> 
+                        </v-list-item-content>
+                        <v-list-item-action>
+                            <v-btn @click="editProduct(product)" icon>
+                                <v-icon>mdi-pencil</v-icon>
+                            </v-btn>
+                        </v-list-item-action>
+                    </v-list-item>
+                </template>
             </v-list>
         </v-card>
         <v-dialog
