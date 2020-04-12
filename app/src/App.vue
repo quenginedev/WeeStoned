@@ -12,15 +12,14 @@ export default {
     setDarkMode(){
       let format = 'hh:mm:ss'
       let now = this.$moment()
-      let before = this.$moment('18:00:00', format)
-      let after = this.$moment('6:00:00', format).add(1, 'days')
-      let start = this.$moment('00:00:00', format)
+      let evening = this.$moment('18:00:00', format)
+      let nextDawn = this.$moment('6:00:00', format).add(1, 'days')
+      let dawn = this.$moment('6:00:00', format)
+      let midnight = this.$moment('00:00:00', format)
 
-      if(now.isBetween(before, after) || now < start){
-        console.log('isDark', before, after, now)
+      if(now.isBetween(evening, nextDawn) || now.isBetween(midnight, dawn)){
         this.$vuetify.theme.dark = true    
       }else{
-        console.log('notDark', before, after, now)
         this.$vuetify.theme.dark = false    
       }
     }
