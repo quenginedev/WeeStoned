@@ -33,19 +33,28 @@
                     dense
                 >
                     <v-icon slot="prepend">mdi-map-marker</v-icon>
-                    <v-icon slot="append">mdi-crosshairs-gps</v-icon>
-                    <v-icon slot="append-outer">mdi-map</v-icon>
+                    <v-icon color="grey" slot="append">mdi-crosshairs-gps</v-icon>
+                    <v-icon color="grey" slot="append-outer">mdi-map</v-icon>
                 </v-text-field>
             </v-form>
         </v-card-text>
         <v-card-actions>
-            <slot></slot>
+            <slot :contact="contact"></slot>
         </v-card-actions>
     </v-card>
 </template>
 <script>
 export default {
     name: 'BasicContactInfo',
+    computed: {
+        continue(){
+            return 
+                this.contact.displayName &&
+                this.contact.phoneNumber &&
+                this.contact.location.name 
+
+        }
+    },
     data() {
         return {
             user: this.$store.getters['auth/getUser'],

@@ -9,7 +9,10 @@ import {WebRTC} from 'vue-webrtc'
 import {createProvider} from './plugins/vue-apollo'
 import Crud from './plugins/prisma-crud'
 import VueCurrencyFilter from 'vue-currency-filter'
-
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+ 
+Vue.use(VueAxios, axios)
 Vue.use(firebase)
 Vue.use(vueMoment)
 Vue.use(Crud, {

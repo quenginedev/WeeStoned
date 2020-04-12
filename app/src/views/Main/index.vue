@@ -36,7 +36,8 @@
                         </v-btn>
                     </template>
                     <template slot-scope="{ basketCount }">
-                        <v-btn 
+                        <v-btn
+                            outlined
                             @click="showBasketMenu = false"
                             :to="{name: 'checkout'}" 
                             :disabled="basketCount < 1" 
