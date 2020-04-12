@@ -36,6 +36,7 @@
             </v-list-item-action>
         </v-list-item>
 
+
         <v-list-item
             :to="{name: 'brand-dashboard'}"
             v-else 
@@ -49,8 +50,22 @@
                 <v-list-item-subtitle>Products, Purchases, etc</v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
-
         <v-divider></v-divider>
+
+        <v-list-item
+            color="primary" 
+        >
+            <v-list-item-icon>
+                <v-icon>mdi-basket</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+                <v-list-item-title>Purchases</v-list-item-title>
+                <v-list-item-subtitle>View all products you've purchased and their statuses</v-list-item-subtitle>
+            </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+
+
         <v-list-item
             @click="changeDarkMode"
         >

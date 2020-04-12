@@ -4,28 +4,8 @@
             <slot name="header"></slot>
         </v-card-title>
         <v-list>
-            <v-list-item 
-                v-for="(item, index) in miniBasket" :key="index" 
-                >
-                <v-list-item-avatar>
-                    <v-img aspect-ratio="1" width="100%" v-if="item.product.img" :src="item.product.img" class="full-width"/>
-                    <v-icon v-else size="72">mdi-tag</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class=" text-capitalize">
-                        <span class="info--text">{{item.quantity}}</span> {{item.product.name}}
-                    </v-list-item-title>
-                    <v-list-item-subtitle class="primary--text">
-                        @ {{item.product.price | currency }} 
-                        = {{item.quantity * item.product.price | currency}}
-                    </v-list-item-subtitle>    
-                </v-list-item-content>
-                <v-list-item-action>
-                    <v-btn @click="removeBasketItem(index)" color="error" dense icon>
-                        <v-icon >mdi-delete-outline</v-icon>
-                    </v-btn>
-                </v-list-item-action>
-            </v-list-item>
+            <cart-list-item v-for="(item, index) in miniBasket" :item="item" :key="index">
+            </cart-list-item>
         </v-list>
         <v-alert v-if="basketCount > 0" text color="primary" icon="mdi-cash">
             <span>Total</span>
@@ -42,8 +22,10 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
-
+import CartListItem from '../components/CartListItem'
 export default {
+    name: "CartList",
+    components:{ CartListItem },
     props: {
         max: {type: Number, default: ()=>undefined},
         closeable: {type: Boolean, default: ()=>false}
