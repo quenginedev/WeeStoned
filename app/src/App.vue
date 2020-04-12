@@ -13,14 +13,14 @@ export default {
       let format = 'hh:mm:ss'
       let now = this.$moment()
       let evening = this.$moment('18:00:00', format)
-      let nextDawn = this.$moment('6:00:00', format).add(1, 'days')
+      // let endOfDay = this.$moment('23:59:59', format)
       let dawn = this.$moment('6:00:00', format)
-      let midnight = this.$moment('00:00:00', format)
+      // let midnight = this.$moment('00:00:00', format)
 
-      if(now.isBetween(evening, nextDawn) || now.isBetween(midnight, dawn)){
-        this.$vuetify.theme.dark = true    
-      }else{
+      if(now.isBetween(dawn, evening)){
         this.$vuetify.theme.dark = false    
+      }else{
+        this.$vuetify.theme.dark = true    
       }
     }
   },

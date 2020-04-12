@@ -19,6 +19,10 @@ export default {
 
         removeProduct(state, index){
             state.basket.splice(index, 1)
+        },
+
+        resetBasket(state){
+            state.basket = []
         }
     }
 }
