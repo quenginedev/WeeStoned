@@ -182,7 +182,7 @@ export default {
                 firebase_id
                 photoURL
                 phoneNumber
-                purchases(
+                purchases
                 {
                     id
                 }

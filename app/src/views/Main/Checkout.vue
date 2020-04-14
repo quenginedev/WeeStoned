@@ -55,7 +55,7 @@
                                 <v-btn
                                     :disabled="!contact.displayName || !contact.phoneNumber || !contact.location.name"
                                     outlined
-                                    @click="step = 3"
+                                    @click="step = 4"
                                     color="primary" block>
                                     Next <v-icon right>mdi-arrow-right</v-icon>
                                 </v-btn>
@@ -143,7 +143,7 @@ export default {
     },
     data() {
         return {
-            step: 3,
+            step: 1,
             purchase: {
                 requests: [],
                 transaction: {},
@@ -155,7 +155,7 @@ export default {
         setPayment(payment){
             this.purchase.transaction = payment
             this.$store.commit('basket/resetBasket')
-            this.step = 4
+            this.step = 5
         }
     },
 }
