@@ -1,8 +1,8 @@
 <template>
     <v-list-item>
-        <v-list-item-avatar>
+        <v-list-item-avatar color="primary">
             <v-img aspect-ratio="1" width="100%" v-if="item.product.img" :src="item.product.img" class="full-width"/>
-            <v-icon v-else size="72">mdi-tag</v-icon>
+            <v-icon v-else >mdi-tag</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
             <v-text-field

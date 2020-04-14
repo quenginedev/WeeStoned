@@ -9,9 +9,12 @@
                 Details
             </v-stepper-step>
             <v-stepper-step :complete="step > 3" step="3">
-                Payment
+                Review
             </v-stepper-step>
             <v-stepper-step :complete="step > 4" step="4">
+                Payment
+            </v-stepper-step>
+            <v-stepper-step :complete="step > 5" step="5">
                 Complete
             </v-stepper-step>
         </v-stepper-header>
@@ -61,12 +64,28 @@
                     </template>
                 </basic-info>
             </v-stepper-content>
-
-            <!-- TODO -->
-                <!-- Review Products, location and delivery Charges -->
-            <!-- TODO -->
-
+            
             <v-stepper-content class="pa-0" step="3">
+                <v-card>
+                    <v-card-title primary-title>
+                        <div>
+                            <div class="headline">Review</div>
+                        </div>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-icon left>mdi-account</v-icon>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn text>text</v-btn>
+                        <v-btn text color="primary">text</v-btn>
+                        <v-spacer></v-spacer>
+                    </v-card-actions>
+                </v-card>
+            </v-stepper-content>
+
+            
+
+            <v-stepper-content class="pa-0" step="4">
                 <payment>
                     <template slot-scope="{isNext, payment}">
                         <v-row>
@@ -92,7 +111,8 @@
                     </template>
                 </payment>
             </v-stepper-content>
-            <v-stepper-content step="4">
+            
+            <v-stepper-content step="5">
                 <v-card>
                     <v-card-text class=" text-center">
                         <v-avatar color="primary" class="mb-5" size="124">
@@ -123,13 +143,17 @@ export default {
     },
     data() {
         return {
-            step: 1,
-            purchase: {}
+            step: 3,
+            purchase: {
+                requests: [],
+                transaction: {},
+                customer: this.$store.getters['auth/getUser'],
+            }
         }
     },
     methods: {
         setPayment(payment){
-            this.purchase.payment = payment
+            this.purchase.transaction = payment
             this.$store.commit('basket/resetBasket')
             this.step = 4
         }

@@ -18,6 +18,9 @@
                         @ {{ deliveryCharge | currency }} 
                     </v-list-item-subtitle>
                 </v-list-item-content>
+                <v-list-item-action>
+                    <v-switch v-model="delivery"></v-switch>
+                </v-list-item-action>
             </v-list-item>
         </v-list>
         <v-alert v-if="basketCount > 0 && showDelivery" text color="primary" icon="mdi-cash">
@@ -65,7 +68,8 @@ export default {
                 total += item.quantity * item.product.price
             })
 
-            total += this.deliveryCharge
+            if(this.delivery)
+                total += this.deliveryCharge
 
             return total
         }
@@ -73,7 +77,8 @@ export default {
     data() {
         return {
             showBasketMenu: false,
-            deliveryCharge: 7
+            delivery: true,
+            deliveryCharge: 7,
         }
     },
     methods: {

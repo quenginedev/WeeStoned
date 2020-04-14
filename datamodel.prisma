@@ -1,3 +1,17 @@
+enum TransactionStatus {
+  PENDING
+  FAILED
+  SUCCESS
+}
+
+enum PurchaseStatus {
+  PENDING
+  ON_ROUTE
+  AWAITING_PICKUP
+  SUCCESS
+  FAILED
+}
+
 type User {
   id: ID! @id
   firebase_id: String! @unique
@@ -21,14 +35,30 @@ type Brand {
   updatedAt: DateTime! @updatedAt
 }
 
-type Purchase {
+type Request {
   id: ID! @id
-  products: [Product!]!
+  products: Product!
   quantity: Int!
-  customer: User!
-  status: String! @default(value: "pending")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  purchase: Purchase! @relation(link: INLINE)
+}
+
+type Purchase {
+  id: ID! @id
+  requests: [Request!]!
+  transaction: Transaction!
+  customer: User! @relation(link: INLINE)
+  status: PurchaseStatus @default(value: PENDING)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Transaction {
+  id: ID! @id
+  method: String!
+  amount: Float
+  status: TransactionStatus @default(value: PENDING)
 }
 
 type Product {
