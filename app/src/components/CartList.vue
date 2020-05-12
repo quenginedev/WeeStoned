@@ -6,22 +6,6 @@
         <v-list>
             <cart-list-item @remove="removeBasketItem" v-for="(item, index) in miniBasket" :item="item" :key="index">
             </cart-list-item>
-            <v-list-item v-if="basketCount > 0 && showDelivery">
-                <v-list-item-avatar>
-                    <v-icon>mdi-truck-fast</v-icon>
-                    </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title class=" text-capitalize">
-                        <span class="info--text">Delivery</span>
-                    </v-list-item-title>
-                    <v-list-item-subtitle  class="primary--text">
-                        @ {{ deliveryCharge | currency }} 
-                    </v-list-item-subtitle>
-                </v-list-item-content>
-                <v-list-item-action>
-                    <v-switch v-model="delivery"></v-switch>
-                </v-list-item-action>
-            </v-list-item>
         </v-list>
         <v-alert v-if="basketCount > 0 && showDelivery" text color="primary" icon="mdi-cash">
             <span>Total</span>
@@ -67,9 +51,6 @@ export default {
             this.basket.forEach(item=>{
                 total += item.quantity * item.product.price
             })
-
-            if(this.delivery)
-                total += this.deliveryCharge
 
             return total
         }

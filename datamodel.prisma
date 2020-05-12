@@ -20,6 +20,7 @@ type User {
   email: String!
   photoURL: String
   purchases: [Purchase!]!
+  addresses: [Location!]!
   brand: Brand
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -48,10 +49,20 @@ type Purchase {
   id: ID! @id
   requests: [Request!]!
   transaction: Transaction!
+  location: Location! 
   customer: User! @relation(link: INLINE)
   status: PurchaseStatus @default(value: PENDING)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Location {
+  id: ID! @id
+  user: User! @relation(link: INLINE)
+  addresses: String!
+  lat: Float!
+  lng: Float!
+  save: Boolean @default(value: false)
 }
 
 type Transaction {

@@ -2,6 +2,16 @@
     <v-col>
         <v-row justify="space-around">
             <v-col cols="12">
+                <v-card outlined class="mb-7">
+                    <v-card-title>
+                        <h2 class="display-1">
+                            <v-icon left color="primary">mdi-domain</v-icon> Brand Details
+                        </h2>
+                    </v-card-title>
+                    <v-card-actions>
+                        <v-btn outlined :to="{name: 'brand-products'}" color="primary" block>Update</v-btn>
+                    </v-card-actions>
+                </v-card>
                 <v-card outlined>
                     <v-card-title>
                         <h2 class="display-1">

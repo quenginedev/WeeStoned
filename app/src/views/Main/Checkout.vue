@@ -27,7 +27,7 @@
                             <v-col cols="6">
                                 <v-btn 
                                     outlined
-                                    @click="step = 2"
+                                    @click="gotToDetails"
                                     :disabled="basketCount < 1" 
                                     color="primary" block>
                                     Next <v-icon right>mdi-arrow-right</v-icon>
@@ -53,7 +53,7 @@
                             </v-col>
                             <v-col cols="6">
                                 <v-btn
-                                    :disabled="!contact.displayName || !contact.phoneNumber || !contact.location.name"
+                                    :disabled="!contact.displayName || !contact.phoneNumber || !contact.location.address"
                                     outlined
                                     @click="step = 4"
                                     color="primary" block>
@@ -134,6 +134,7 @@ import CheckoutList from '../../components/CartList'
 import BasicInfo from '../Forms/BasicInfo'
 import Payment from '../Forms/Payment'
 
+import {mapGetters} from 'vuex'
 export default {
     name: 'Checkout',
     components: {
@@ -141,13 +142,27 @@ export default {
         BasicInfo,
         Payment
     },
+    computed: {
+        ...mapGetters({
+            basket: 'basket/getProducts'
+        }),
+    },
     data() {
         return {
             step: 1,
+
             purchase: {
-                requests: [],
-                transaction: {},
-                customer: this.$store.getters['auth/getUser'],
+                status: 'PENDING',
+                requests: {
+                    // product & quantity
+                },
+                transaction: {
+                    // method, amount, status
+                },
+                location: {
+                    // lat & lng
+                },
+                customer: this.$store.getters['auth/getUser'], // id
             }
         }
     },
@@ -156,6 +171,13 @@ export default {
             this.purchase.transaction = payment
             this.$store.commit('basket/resetBasket')
             this.step = 5
+        },
+        gotToDetails(){
+            this.purchase.requests.create = this.basket.map(item=>{
+                return { product: {connect: {id: item.product.id}}, quantity: parseInt(item.quantity)}
+            })
+            console.log(this.purchase)
+            this.step = 2
         }
     },
 }

@@ -14,9 +14,16 @@
         :product="product"
         :color="colors[Math.floor(Math.random() * colors.length)]"
         >
-          <v-btn @click="showQuantitySelector(product)" block color="primary" outlined>
-            <v-icon left>mdi-basket</v-icon> add to basket
-          </v-btn>
+          <v-col cols="3">
+            <v-btn block color="primary" outlined>
+              <v-icon>mdi-star-outline</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="9">
+            <v-btn @click="showQuantitySelector(product)" block color="primary" outlined>
+              <v-icon left>mdi-basket</v-icon> add to basket
+            </v-btn>
+          </v-col>
         </ProductCard>
         <v-dialog
             v-model="showSelectedProduct"
