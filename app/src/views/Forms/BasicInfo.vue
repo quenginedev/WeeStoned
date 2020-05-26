@@ -70,35 +70,56 @@
                     }"
                 >
                     <GmapMarker
-                        @drag="dragMap"
                         :position="markerPosition"
-                        :clickable="true"
-                        :draggable="true"
+                        :clickable="false"
+                        :draggable="false"
                     >
                     </GmapMarker>
                 </GmapMap>
                 <v-col class="px-3 pl-9" style="position: absolute; top: 15px; right: 15px">
                     <v-row justify="center" align="center">
-                        <v-text-field
-                            hide-details
-                            solo
-                            filled
-                            rounded
-                            :placeholder="locationPlaceholder || 'Search place'"
+                        <v-menu v-model="showGeocodingMenu" offset-y close-on-click>
+                            <template >
+                                <v-text-field
+                                    v-model="addressSearch"
+                                    hide-details
+                                    solo
+                                    filled
+                                    rounded
+                                    :placeholder="locationPlaceholder || 'Search place'"
 
-                        >
-                            <v-icon
-                                @click="getGeolocation"
-                                :color="gpsLoading ? 'red' : 'grey'"
-                                slot="append">mdi-crosshairs-gps</v-icon>
-                            <v-btn icon @click="show_map = false" slot="append-outer" color="black">
-                                <v-icon >mdi-close</v-icon>
-                            </v-btn>
-                        </v-text-field>
+                                >
+                                    <v-icon
+                                        @click="getGeolocation"
+                                        :color="gpsLoading ? 'red' : 'grey'"
+                                        slot="append">mdi-crosshairs-gps</v-icon>
+                                    <v-icon
+                                        @click="searchGeocoding"
+                                        v-if="addressSearch"
+                                        class="ml-3"
+                                        :color="gpsLoading ? 'red' : 'grey'"
+                                        slot="append">mdi-magnify</v-icon>    
+                                    <v-btn icon @click="show_map = false" slot="append-outer" color="black">
+                                        <v-icon >mdi-close</v-icon>
+                                    </v-btn>
+                                </v-text-field>
+                            </template>
+                            <v-card class="text-center">
+                                <v-progress-circular class="my-3" v-if="loadingGeocoding" indeterminate color="primary"></v-progress-circular>
+                                <v-list v-else>
+                                    <v-list-item @click="setGeocodingPosition(address)" v-for="(address, index) in addressList" :key="index">
+                                        {{address.formatted_address}}
+                                    </v-list-item>
+                                    <v-list-item v-if="addressList.length < 1">
+                                        Location not found
+                                    </v-list-item>
+                                </v-list>                            
+                            </v-card>
+                        </v-menu>
                     </v-row>
                 </v-col>
                 <v-col cols="12" style="position: absolute; bottom: 15px">
-                    <v-btn block color="primary" large>
+                    <v-btn @click="confirmLocation" block color="primary" large>
                         <v-icon left>mdi-map-marker</v-icon> Confirm
                     </v-btn>
                 </v-col>
@@ -118,26 +139,56 @@ export default {
             markerPosition: {lat:5.551147, lng:-0.208125},
             user: this.$store.getters['auth/getUser'],
             gpsLoading: false,
-            show_map: true,
+            show_map: false,
             contact: {
-                location: {}
-            }
+                location: {
+                    save :false
+                }
+            },
+            addressSearch: '',
+            addressList: [],
+            showGeocodingMenu: false,
+            loadingGeocoding: false
         }
     },
     methods: {
+        confirmLocation(){
+            this.contact.location.address = this.locationPlaceholder
+            this.contact = {...this.contact, ...this.markerPosition}
+            this.show_map = false
+        },
+        setGeocodingPosition(address){
+            console.log(address)
+            this.locationPlaceholder = address.formatted_address
+            this.markerPosition = address.geometry.location
+            this.addressSearch = ''
+        },
+        searchGeocoding(){
+            this.loadingGeocoding = true
+            this.showGeocodingMenu = true
+            this.$http.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.addressSearch}&key=${process.env.VUE_APP_GOOGLE_CLOUD_API}`)
+                .then(res=>{
+                    console.log(res.data)
+                    if(res.data)
+                    this.addressList = res.data.results
+                })
+                .finally(_=>{
+                    this.loadingGeocoding = false
+                })
+        },
         dragMap(position){
+            console.log(position.latLng)
+            this.$refs.gmap.panTo(position.latLng)
             this.markerPosition = position.latLng
         },
         async setPosition(position){
             this.$refs.gmap.panTo(position.latLng)
-            // console.log(position.latLng.lat())
             this.locationPlaceholder = await this.getClosestLandmark(position.latLng.lat(), position.latLng.lng())
             setTimeout(()=>{
                 this.dragMap(position)
             }, 300)
         },
-        getClosestLandmark(lng,lat){
-            console.log(lng, lat)
+        getClosestLandmark(lat, lng){
             return this.$http.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.VUE_APP_GOOGLE_CLOUD_API}`)
                 .then(res=>{
                     console.log(res.data.results)
@@ -155,7 +206,6 @@ export default {
                             this.contact.location.lat = latitude
                             this.contact.location.lng = longitude
                             this.markerPosition = {lat: latitude, lng: longitude}
-                            console.log(this.contact)
                         })
                 }).catch(err=>{
                     console.error(err)

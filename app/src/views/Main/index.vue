@@ -6,11 +6,12 @@
             <v-badge
                 color="info"
                 overlap
+                :value="0"
                 class="mr-7"
             >
-                <!-- <v-btn icon  color="info" dense> -->
+                <v-btn icon  color="info" disabled>
                     <v-icon color="info">mdi-bell-outline</v-icon>
-                <!-- </v-btn> -->
+                </v-btn>
             </v-badge>
             <v-menu v-model="showBasketMenu" min-width="320" offset-y :close-on-content-click="false">
                 <template v-slot:activator="{ on }">
@@ -21,7 +22,9 @@
                         color="success"
                         overlap
                     >
-                        <v-icon v-on="on" color="success">mdi-basket-outline</v-icon> 
+                        <v-btn icon dense v-on="on" :disabled="basketCount < 1">
+                            <v-icon  color="success">mdi-basket-outline</v-icon> 
+                        </v-btn>
                     </v-badge>
                 </template>
                 <checkout-list 

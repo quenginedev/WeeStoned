@@ -26,7 +26,7 @@ Vue.use(Crud, {
 Vue.use(VueGoogleMaps, {
   load: {
     key: process.env.VUE_APP_GOOGLE_CLOUD_API,
-    libraries: 'places, geocoding', // This is required if you use the Autocomplete plugin
+    libraries: 'map', // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'
     // (as you require)

@@ -55,7 +55,7 @@
                                 <v-btn
                                     :disabled="!contact.displayName || !contact.phoneNumber || !contact.location.address"
                                     outlined
-                                    @click="step = 4"
+                                    @click="setBasicInfo(contact)"
                                     color="primary" block>
                                     Next <v-icon right>mdi-arrow-right</v-icon>
                                 </v-btn>
@@ -87,7 +87,7 @@
 
             <v-stepper-content class="pa-0" step="4">
                 <payment>
-                    <template slot-scope="{isNext, payment}">
+                    <template slot-scope="{isNext, payment,}">
                         <v-row>
                             <v-col cols="6">
                                 <v-btn 
@@ -150,7 +150,6 @@ export default {
     data() {
         return {
             step: 1,
-
             purchase: {
                 status: 'PENDING',
                 requests: {
@@ -162,13 +161,21 @@ export default {
                 location: {
                     // lat & lng
                 },
-                customer: this.$store.getters['auth/getUser'], // id
+                user: {
+                    connect: this.$store.getters['auth/getID']
+                }, // id
             }
         }
     },
     methods: {
+        setBasicInfo(contact){
+            this.purchase.location = contact.location
+            this.step = 4
+        },
         setPayment(payment){
             this.purchase.transaction = payment
+            console.log(JSON.stringify(this.purchase, null, 2))
+            //TODO make purchases request
             this.$store.commit('basket/resetBasket')
             this.step = 5
         },
@@ -179,6 +186,6 @@ export default {
             console.log(this.purchase)
             this.step = 2
         }
-    },
+    }
 }
 </script>

@@ -25,7 +25,7 @@ export default {
     }
   },
   created() {
-      // this.setDarkMode()
+      this.setDarkMode()
   },
 };
 </script>

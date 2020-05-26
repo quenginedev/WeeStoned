@@ -49,12 +49,13 @@ type Purchase {
   id: ID! @id
   requests: [Request!]!
   transaction: Transaction!
-  location: Location! 
-  customer: User! @relation(link: INLINE)
+  location: Location!
+  user: User! @relation(link: INLINE)
   status: PurchaseStatus @default(value: PENDING)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
+
 
 type Location {
   id: ID! @id

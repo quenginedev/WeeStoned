@@ -53,7 +53,7 @@
             </div>
         </v-card-text>
         <v-card-actions>
-            <slot :payment="paymentOptions" :isNext="isNext"></slot>
+            <slot :payment="paymentOptions" type="" :isNext="isNext"></slot>
         </v-card-actions>
     </v-card>
 </template>
@@ -63,14 +63,17 @@ export default {
     data() {
         return {
             paymentOptions:{},
+            type: '',
             isNext: false
         }
     },
     methods: {
         setOnDelivery(){
+            this.type = 'On delivery'
             this.paymentOptions = {
                 method: 'on_delivery',
-                name: 'On delivery'
+                status: 'PENDING', //FAILED, SUCCESS
+                amount: 0
             }
             this.isNext = true
         },
