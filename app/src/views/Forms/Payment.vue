@@ -1,19 +1,19 @@
 <template>
     <v-card>
         <v-card-title>
-            <v-row>
+            <v-row align="center">
                 <v-col cols="3">
                     <v-avatar
                         size="72"
                         color="primary"
                     >
-                        <v-icon  size="32">mdi-cash</v-icon>
+                        <v-icon size="32">mdi-cash</v-icon>
                     </v-avatar>
                 </v-col>
 
                 <v-col cols="9">
-                    <h3 class="headline mb-0">Payment Options</h3>
-                    <div class=" subtitle-1">Select one of the payment options below to continue</div>
+                    <h3 class="headline mb-0">Total <span class="primary--text">{{cost | currency}}</span></h3>
+                    <!-- <div class=" subtitle-1">Select one of the payment options below to continue</div> -->
                 </v-col>
             </v-row>
         </v-card-title>
@@ -60,6 +60,12 @@
 <script>
 export default {
     name: "Payment",
+    props:{
+        cost: {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
             paymentOptions:{},
@@ -73,7 +79,7 @@ export default {
             this.paymentOptions = {
                 method: 'on_delivery',
                 status: 'PENDING', //FAILED, SUCCESS
-                amount: 0
+                amount: this.cost
             }
             this.isNext = true
         },

@@ -79,7 +79,7 @@
                 <v-col class="px-3 pl-9" style="position: absolute; top: 15px; right: 15px">
                     <v-row justify="center" align="center">
                         <v-menu v-model="showGeocodingMenu" offset-y close-on-click>
-                            <template >
+                            <template v-slot:activator="{ on }">
                                 <v-text-field
                                     v-model="addressSearch"
                                     hide-details
@@ -87,7 +87,7 @@
                                     filled
                                     rounded
                                     :placeholder="locationPlaceholder || 'Search place'"
-
+                                    :autofocus="false"
                                 >
                                     <v-icon
                                         @click="getGeolocation"
@@ -184,9 +184,7 @@ export default {
         async setPosition(position){
             this.$refs.gmap.panTo(position.latLng)
             this.locationPlaceholder = await this.getClosestLandmark(position.latLng.lat(), position.latLng.lng())
-            setTimeout(()=>{
-                this.dragMap(position)
-            }, 300)
+            this.dragMap(position)
         },
         getClosestLandmark(lat, lng){
             return this.$http.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.VUE_APP_GOOGLE_CLOUD_API}`)

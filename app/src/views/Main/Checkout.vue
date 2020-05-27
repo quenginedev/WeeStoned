@@ -22,12 +22,12 @@
         <v-stepper-items>
             <v-stepper-content class="pa-0" step="1">
                 <checkout-list showDelivery>
-                    <template slot-scope="{basketCount}">
+                    <template slot-scope="{basketCount, basketTotal}">
                         <v-row justify="end">
                             <v-col cols="6">
                                 <v-btn 
                                     outlined
-                                    @click="gotToDetails"
+                                    @click="gotToDetails(basketTotal)"
                                     :disabled="basketCount < 1" 
                                     color="primary" block>
                                     Next <v-icon right>mdi-arrow-right</v-icon>
@@ -69,15 +69,61 @@
                 <v-card>
                     <v-card-title primary-title>
                         <div>
-                            <div class="headline">Review</div>
+                            <div class="headline">Delivery Options</div>
                         </div>
                     </v-card-title>
                     <v-card-text>
-                        <v-icon left>mdi-account</v-icon>
+                        <v-list>
+                            <v-list-item outlined class="grey">
+                                <v-list-item-icon>
+                                    <v-icon class="white--text">mdi-warehouse</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content >
+                                    <v-list-item-title class="white--text">
+                                        <h2>Self Pickup</h2>
+                                    </v-list-item-title >
+                                    <v-list-item-subtitle class="white--text">
+                                        <h3>No charges</h3>
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item outlined class="grey mt-3">
+                                <v-list-item-icon>
+                                    <v-icon class="white--text">mdi-bike-fast</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content >
+                                    <v-list-item-title class="white--text">
+                                        <h2>Same Day Delivery</h2>
+                                    </v-list-item-title >
+                                    <v-list-item-subtitle class="white--text">
+                                        <h3>{{ 10 | currency}}</h3>
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item outlined @click="setDeliveryFee(7)" class="secondary mt-3">
+                                <v-list-item-icon>
+                                    <v-icon class="white--text">mdi-truck-delivery</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content >
+                                    <v-list-item-title class="white--text">
+                                        <h2>Scheduled Delivery</h2>
+                                    </v-list-item-title >
+                                    <v-list-item-subtitle class="white--text">
+                                        <h3>{{ 7 | currency}}</h3>
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn text>text</v-btn>
-                        <v-btn text color="primary">text</v-btn>
+                        <v-btn 
+                            @click="step =2"
+                            outlined
+                            color="grey" 
+                            dark 
+                            block>
+                                back
+                            </v-btn>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -86,13 +132,13 @@
             
 
             <v-stepper-content class="pa-0" step="4">
-                <payment>
+                <payment :cost="totalCost">
                     <template slot-scope="{isNext, payment,}">
                         <v-row>
                             <v-col cols="6">
                                 <v-btn 
                                     outlined
-                                    @click="step = 2"
+                                    @click="step = 3"
                                     color="grey" dark block>
                                     <v-icon left>mdi-arrow-left</v-icon>
                                     Back 
@@ -120,6 +166,7 @@
                         </v-avatar>
                         <h3>Purchase made successfully</h3>
                         <p>You would get a notification when your delivery arrives</p>
+                        <p class="info--text"><v-icon color="info" left>mdi-information</v-icon>This is a running test</p>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn :to="{name: 'home'}" block color="primary" outlined>Back to store</v-btn>
@@ -146,10 +193,22 @@ export default {
         ...mapGetters({
             basket: 'basket/getProducts'
         }),
+        totalCost(){
+            let total = 0
+            
+            this.basket.forEach(item=>{
+                total += item.quantity * item.product.price
+            })
+
+            total += this.deliveryFee
+            console.log(total)
+            return total
+        }
     },
     data() {
         return {
-            step: 1,
+            step: 5,
+            deliveryFee: 0,
             purchase: {
                 status: 'PENDING',
                 requests: {
@@ -168,9 +227,13 @@ export default {
         }
     },
     methods: {
+        setDeliveryFee(amount){
+            this.deliveryFee = amount
+            this.step = 4
+        },
         setBasicInfo(contact){
             this.purchase.location = contact.location
-            this.step = 4
+            this.step = 3
         },
         setPayment(payment){
             this.purchase.transaction = payment
@@ -179,7 +242,7 @@ export default {
             this.$store.commit('basket/resetBasket')
             this.step = 5
         },
-        gotToDetails(){
+        gotToDetails(basketTotal){
             this.purchase.requests.create = this.basket.map(item=>{
                 return { product: {connect: {id: item.product.id}}, quantity: parseInt(item.quantity)}
             })
