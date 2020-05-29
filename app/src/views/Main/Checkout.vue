@@ -207,7 +207,7 @@ export default {
     },
     data() {
         return {
-            step: 5,
+            step: 1,
             deliveryFee: 0,
             purchase: {
                 status: 'PENDING',
