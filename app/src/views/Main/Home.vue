@@ -45,11 +45,13 @@
                 </p>
                 <v-alert v-if="selectedProduct.product.usage" color="info" dense text icon="mdi-information">
                   <p>{{selectedProduct.product.usage}}</p>
-                </v-alert>        
-                <v-img aspect-ratio="1" 
-                  width="100%" v-if="selectedProduct.product.img" 
-                  :src="selectedProduct.product.img" class="full-width"/>
-                <v-icon v-else size="72">mdi-tag</v-icon>
+                </v-alert>
+<!--                <overdrive>-->
+                  <v-img aspect-ratio="1"
+                    width="100%" v-if="selectedProduct.product.img"
+                    :src="selectedProduct.product.img" class="full-width"/>
+                  <v-icon v-else size="72">mdi-tag</v-icon>
+<!--                </overdrive>-->
                 <v-col class="mb-0 pb-0" cols="12">
                   <v-row  justify="space-between">
                     <v-col class="my-0 py-0" cols="6">

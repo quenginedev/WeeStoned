@@ -38,7 +38,7 @@ type Brand {
 
 type Request {
   id: ID! @id
-  products: Product!
+  product: Product!
   quantity: Int!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

@@ -12,7 +12,10 @@ import VueCurrencyFilter from 'vue-currency-filter'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import Overdrive from 'vue-overdrive'
+import Paystack from 'vue-paystack'
 
+Vue.use(Overdrive)
 Vue.use(VueAxios, axios)
 Vue.use(firebase)
 Vue.use(vueMoment)
@@ -20,7 +23,8 @@ Vue.use(Crud, {
   operations: [
     'product',
     'productType',
-    'user'
+    'user',
+    'purchases'
 ]
 })
 Vue.use(VueGoogleMaps, {
@@ -57,6 +61,7 @@ Vue.use(VueCurrencyFilter,{
 })
 
 Vue.component(WebRTC.name, WebRTC)
+Vue.component('paystack', Paystack)
 
 const apolloProvider = createProvider()
 

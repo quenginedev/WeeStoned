@@ -209,6 +209,7 @@ export default {
                     }, ()=>{
                         this.error = true
                     })
+
                 }
             }).catch(err=>{
                 this.disable_nav = false

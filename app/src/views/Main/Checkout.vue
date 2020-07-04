@@ -87,7 +87,7 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item outlined class="grey mt-3">
+                            <v-list-item outlined @click="setDeliveryFee(20)"  class="primary mt-3">
                                 <v-list-item-icon>
                                     <v-icon class="white--text">mdi-bike-fast</v-icon>
                                 </v-list-item-icon>
@@ -96,11 +96,11 @@
                                         <h2>Same Day Delivery</h2>
                                     </v-list-item-title >
                                     <v-list-item-subtitle class="white--text">
-                                        <h3>{{ 10 | currency}}</h3>
+                                        <h3>{{ 20 | currency}}</h3>
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item outlined @click="setDeliveryFee(7)" class="secondary mt-3">
+                            <v-list-item outlined @click="setDeliveryFee(10)" class="secondary mt-3">
                                 <v-list-item-icon>
                                     <v-icon class="white--text">mdi-truck-delivery</v-icon>
                                 </v-list-item-icon>
@@ -109,7 +109,7 @@
                                         <h2>Scheduled Delivery</h2>
                                     </v-list-item-title >
                                     <v-list-item-subtitle class="white--text">
-                                        <h3>{{ 7 | currency}}</h3>
+                                        <h3>{{ 10 | currency}}</h3>
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>

@@ -2,6 +2,7 @@
     <div>
         <v-card>
             <v-card-text class="pb-0">
+<!--                <location-selection/>-->
                 <v-form>
                     <h3 class="mb-3">Contact Info</h3>
                     <v-text-field
@@ -35,9 +36,9 @@
                         @click="show_map = true"
                     >
                         <v-icon slot="prepend">mdi-map-marker</v-icon>
-                        <v-icon 
-                            @click="getGeolocation" 
-                            :color="gpsLoading ? 'red' : 'grey'" 
+                        <v-icon
+                            @click="getGeolocation"
+                            :color="gpsLoading ? 'red' : 'grey'"
                             slot="append-outer">mdi-crosshairs-gps</v-icon>
                         <v-icon @click="show_map = true" color="grey" slot="append">mdi-map</v-icon>
                     </v-text-field>
@@ -129,12 +130,15 @@
 </template>
 <script>
 import { Plugins } from '@capacitor/core'
+import LocationSelection from "../../components/LocationSelection";
 const { Geolocation } = Plugins
 export default {
     
     name: 'BasicContactInfo ',
+    components: {LocationSelection},
     data() {
         return {
+            isNewLocation: false,
             locationPlaceholder: '',
             markerPosition: {lat:5.551147, lng:-0.208125},
             user: this.$store.getters['auth/getUser'],
